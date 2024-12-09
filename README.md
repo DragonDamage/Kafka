@@ -57,10 +57,10 @@
 
 # Конфигурации и логирование:
 ```bash
-cat /opt/kafka/config/server.properties # Конфигурация kafka
-./kafka-topics.sh --version             # Посмотреть версию kafka (в папке /opt/kafka/bin/)
-cd /var/log/kafka                       # Логи kafka
+cd /var/log/kafka           # Логи kafka
+./kafka-topics.sh --version # Посмотреть версию kafka (в папке /opt/kafka/bin/)
 cat /etc/schema-registry/schema-registry.properties # Конфигурация схемы реестров
+cat /opt/kafka/config/server.properties             # Конфигурация kafka
 ```
 
 # [BROKER]:
@@ -71,7 +71,7 @@ cat /etc/schema-registry/schema-registry.properties # Конфигурация �
 
 # [ZOOKEEPER]:
 ```bash
-echo stat | nc {ip}:9092 # Просмотр доступа к зукиперу
+echo stat | nc {ip}:9092               # Просмотр доступа к зукиперу
 ./zookeeper-shell.sh localhost:2181    # Подключение к зукиперу
 get /brokers/topics/{topic_name}       # Просмотр брокера в консоли зукипера
 ./opt/zookeeper/bin/zkServer.sh status # Статус zookeeper
@@ -79,6 +79,30 @@ cat /opt/zookeeper/conf/zoo.cfg        # Конфигурация zookeeper
 ./zkServer.sh version                  # Версия zookeeper (в папке /opt/zookeeper/bin/)
 ```
 
+# [TOPICS]:
+```bash
+./kafka-topics.sh --list --bootstrap-server localhost:9092 # Вывести список всех топиков (в папке /opt/kafka/bin/)
+./kafka-topics.sh --describe --topic {topic_name} --bootstrap-server localhost:9092 # Посмотреть информацию о топике (в папке /opt/kafka/bin/)
+./kafka-topics.sh --alter --topic {topic_name} --bootstrap-server localhost:9092 --config {config_name}={config_value} # Изменение конфигурации топика (в папке /opt/kafka/bin/)
+./kafka-topics.sh --create --topic {topic_name} --bootstrap-server localhost:9092 # Создание топика по умолчанию (в папке /opt/kafka/bin/)
+./kafka-topics.sh --zookeeper zoo1.example.com:2181/kafka-cluster --create --topic {topic_name} --replication-factor 3 --partitions 8 # Создание топика с конкретными параметрами (в папке /opt/kafka/bin/)
+./kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic {topic_name} # Удаление топика (в папке /opt/kafka/bin/)
+./kafka-topics.sh --bootstrap-server localhost:9092 --delete-all # Удаление всех топиков (в папке /opt/kafka/bin/) - Если выдаёт ошибку, то пишем скрипт:
+---
+#!/bin/bash
+# Список всех топиков
+topics=$(.kafka-topics.sh --list --bootstrap-server localhost:9092)
+
+# Удаление топиков
+for topic in $topics; do
+    ./kafka-topics.sh --delete --topic "$topic" --bootstrap-server localhost:9092
+    echo "Deleted topic: $topic"
+done
+---
+./kafka-topics.sh --bootstrap-server localhost:9092 --describe # Посмотреть конфигурацию всех топиков и брокеров (в папке /opt/kafka/bin/)
+echo "Text message" | bin/kafka-console-producer.sh --broker-list localhost:9092 --topic {topic_name} # Отправка сообщения в топик
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic {topic_name} --from-beginning # Подключение к топику и чтение сообщения
+```
 
 
 
