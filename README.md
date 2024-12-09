@@ -53,3 +53,35 @@
 ![Screenshot](Kafka_6.png)
 
 
+---
+
+# Конфигурации и логирование:
+```bash
+cat /opt/kafka/config/server.properties # Конфигурация kafka
+./kafka-topics.sh --version             # Посмотреть версию kafka (в папке /opt/kafka/bin/)
+cd /var/log/kafka                       # Логи kafka
+cat /etc/schema-registry/schema-registry.properties # Конфигурация схемы реестров
+```
+
+# [BROKER]:
+```bash
+./kafka-topics.sh --bootstrap-server localhost:9092 --describe # Проверка количества подключенных брокеров кафка к ноде (в папке /opt/kafka/bin/)
+./kafka-server-start.sh /opt/kafka/config/server.properties    # Рестарт брокера
+```
+
+# [ZOOKEEPER]:
+```bash
+echo stat | nc {ip}:9092 # Просмотр доступа к зукиперу
+./zookeeper-shell.sh localhost:2181    # Подключение к зукиперу
+get /brokers/topics/{topic_name}       # Просмотр брокера в консоли зукипера
+./opt/zookeeper/bin/zkServer.sh status # Статус zookeeper
+cat /opt/zookeeper/conf/zoo.cfg        # Конфигурация zookeeper
+./zkServer.sh version                  # Версия zookeeper (в папке /opt/zookeeper/bin/)
+```
+
+
+
+
+
+
+
