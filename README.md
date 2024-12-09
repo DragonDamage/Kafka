@@ -88,11 +88,10 @@ cat /opt/zookeeper/conf/zoo.cfg        # Конфигурация zookeeper
 ./kafka-topics.sh --zookeeper zoo1.example.com:2181/kafka-cluster --create --topic {topic_name} --replication-factor 3 --partitions 8 # Создание топика с конкретными параметрами (в папке /opt/kafka/bin/)
 ./kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic {topic_name} # Удаление топика (в папке /opt/kafka/bin/)
 ./kafka-topics.sh --bootstrap-server localhost:9092 --delete-all # Удаление всех топиков (в папке /opt/kafka/bin/) - Если выдаёт ошибку, то пишем скрипт:
----
+--- script_delete_all_topic.sh
 #!/bin/bash
 # Список всех топиков
 topics=$(.kafka-topics.sh --list --bootstrap-server localhost:9092)
-
 # Удаление топиков
 for topic in $topics; do
     ./kafka-topics.sh --delete --topic "$topic" --bootstrap-server localhost:9092
