@@ -88,7 +88,7 @@ cat /opt/zookeeper/conf/zoo.cfg        # Конфигурация zookeeper
 ./kafka-topics.sh --zookeeper zoo1.example.com:2181/kafka-cluster --create --topic {topic_name} --replication-factor 3 --partitions 8 # Создание топика с конкретными параметрами (в папке /opt/kafka/bin/)
 ./kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic {topic_name} # Удаление топика (в папке /opt/kafka/bin/)
 ./kafka-topics.sh --bootstrap-server localhost:9092 --delete-all # Удаление всех топиков (в папке /opt/kafka/bin/) - Если выдаёт ошибку, то пишем скрипт:
---- script_delete_all_topic.sh
+--------------------------------------------------------------------------------- script_delete_all_topic.sh
 #!/bin/bash
 # Список всех топиков
 topics=$(.kafka-topics.sh --list --bootstrap-server localhost:9092)
@@ -97,7 +97,7 @@ for topic in $topics; do
     ./kafka-topics.sh --delete --topic "$topic" --bootstrap-server localhost:9092
     echo "Deleted topic: $topic"
 done
----
+---------------------------------------------------------------------------------
 ./kafka-topics.sh --bootstrap-server localhost:9092 --describe # Посмотреть конфигурацию всех топиков и брокеров (в папке /opt/kafka/bin/)
 echo "Text message" | bin/kafka-console-producer.sh --broker-list localhost:9092 --topic {topic_name} # Отправка сообщения в топик
 bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic {topic_name} --from-beginning # Подключение к топику и чтение сообщения
